@@ -9,10 +9,12 @@ function App() {
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState('');
 
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   // Fetch todos from backend
   useEffect(() => {
     setLoading(true);
-    axios.get('http://localhost:5000/todos')
+    axios.get(`${API_URL}/todos`)
       .then(res => {
         setTodos(res.data);
         setLoading(false);
@@ -29,7 +31,7 @@ function App() {
     if (!input.trim()) return;
 
     setLoading(true);
-    axios.post('http://localhost:5000/todos', { text: input.trim() })
+    axios.post(`${API_URL}/todos`, { text: input.trim() })
       .then(res => {
         setTodos([...todos, res.data]);
         setInput('');
@@ -44,7 +46,7 @@ function App() {
 
   // Toggle complete
   const toggleTodo = (id, completed) => {
-    axios.put(`http://localhost:5000/todos/${id}/toggle`, { completed: !completed })
+    axios.put(`${API_URL}/todos/${id}/toggle`, { completed: !completed })
       .then(res => {
         setTodos(todos.map(todo => 
           todo._id === id ? res.data : todo
@@ -62,7 +64,7 @@ function App() {
       return;
     }
 
-    axios.delete(`http://localhost:5000/todos/${id}`)
+    axios.delete(`${API_URL}/todos/${id}`)
       .then(() => {
         setTodos(todos.filter(todo => todo._id !== id));
       })
@@ -91,7 +93,7 @@ function App() {
       return;
     }
 
-    axios.put(`http://localhost:5000/todos/${id}`, { text: editText.trim() })
+    axios.put(`${API_URL}/todos/${id}`, { text: editText.trim() })
       .then(res => {
         setTodos(todos.map(todo => 
           todo._id === id ? res.data : todo
