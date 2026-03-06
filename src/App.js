@@ -23,7 +23,7 @@ function App() {
         console.error('Error fetching todos:', err);
         setLoading(false);
       });
-  }, []);
+  }, [API_URL]);
 
   // Add new todo
   const addTodo = (e) => {
